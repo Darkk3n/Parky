@@ -1,48 +1,45 @@
 using System.Collections.Generic;
+using System.Linq;
+using Parky.Data;
 using Parky.Models.Repository.IRepository;
 
 namespace Parky.Models.Repository
 {
     public class NationalParkRepository : INationalParkRepository
     {
+        private readonly DataContext context;
+
+        public NationalParkRepository(DataContext context)
+        {
+            this.context = context;
+        }
+
         public bool CreateNationalPark(NationalPark park)
         {
-            throw new System.NotImplementedException();
+            context.NationalPaks.Add(park);
+            return Save();
         }
 
         public bool DeleteNationalPark(int id)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public NationalPark GetNationalPark(int nationalParkId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public ICollection<NationalPark> GetNationalParks()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool NationalParkExists(string parkName)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool NationalParkExists(int parkId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool Save()
-        {
-            throw new System.NotImplementedException();
+            var parkToDelete = context.NationalPaks.FirstOrDefault(r => r.Id == id);
+            context.Remove(parkToDelete);
+            return Save();
         }
 
         public bool UpdateNationalPark(NationalPark park)
         {
-            throw new System.NotImplementedException();
+            context.NationalPaks.Update(park);
+            return Save();
         }
+        public NationalPark GetNationalPark(int nationalParkId) => context.NationalPaks.FirstOrDefault(r => r.Id == nationalParkId);
+
+        public ICollection<NationalPark> GetNationalParks() => context.NationalPaks.OrderBy(r => r.Name).ToList();
+
+        public bool NationalParkExists(string parkName) => context.NationalPaks.Any(r => r.Name.ToLower().Trim() == parkName.ToLower().Trim());
+
+        public bool NationalParkExists(int parkId) => context.NationalPaks.Any(r => r.Id == parkId);
+
+        public bool Save() => context.SaveChanges() > 0;
     }
 }

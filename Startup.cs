@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Parky.Data;
+using Parky.Models.Repository;
+using Parky.Models.Repository.IRepository;
 
 namespace Parky
 {
@@ -28,6 +30,7 @@ namespace Parky
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Parky", Version = "v1" });
             });
             services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ParkConn")));
+            services.AddScoped<INationalParkRepository, NationalParkRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
