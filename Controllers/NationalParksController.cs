@@ -21,5 +21,17 @@ namespace Parky.Controllers
 
         [HttpGet]
         public IActionResult GetNationalParks() => Ok(parkRepo.GetNationalParks().Select(r => mapper.Map<NationalParkDto>(r)));
+
+        [HttpGet("{parkId:int}")]
+        public IActionResult GetNationalPark(int parkId)
+        {
+            var park = parkRepo.GetNationalPark(parkId);
+            if (park == null)
+            {
+                return NotFound();
+            }
+            var parkDto = mapper.Map<NationalParkDto>(park);
+            return Ok(parkDto);
+        }
     }
 }
