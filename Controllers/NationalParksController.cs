@@ -75,5 +75,20 @@ namespace Parky.Controllers
             }
             return NoContent();
         }
+
+        [HttpDelete("{parkId:int}", Name = "DeleteNationalPark")]
+        public IActionResult DeleteNationalPark(int parkId)
+        {
+            if (!parkRepo.NationalParkExists(parkId))
+            {
+                return NotFound();
+            }
+            if (!parkRepo.DeleteNationalPark(parkId))
+            {
+                ModelState.AddModelError(string.Empty, $"An error ocurred when deleting Park with Id: {parkId}");
+                return StatusCode(StatusCodes.Status500InternalServerError, ModelState);
+            }
+            return NoContent();
+        }
     }
 }
