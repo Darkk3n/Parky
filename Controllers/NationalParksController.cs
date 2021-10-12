@@ -43,7 +43,6 @@ namespace Parky.Controllers
 
         [HttpPost(Name = "CreatePark")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(NationalParkDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         public IActionResult CreatePark([FromBody] NationalParkDto parkDto)
@@ -87,7 +86,6 @@ namespace Parky.Controllers
         }
 
         [HttpDelete("{parkId:int}", Name = "DeleteNationalPark")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteNationalPark(int parkId)
